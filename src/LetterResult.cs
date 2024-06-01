@@ -13,4 +13,9 @@ public class LetterResult
     }
 
     public LetterState State => Spots.Max();
+
+    public byte MinCount => (byte)Spots.Count(s => s == LetterState.Present || s == LetterState.Correct);
+    public byte MaxCount => (byte)Spots.Count(s => s != LetterState.Absent);
+
+    public Range CountRange => new(MinCount, MaxCount);
 }

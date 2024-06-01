@@ -34,7 +34,16 @@ public class Game
                 }
             }
 
-            if (states[g] != SpotState.Present) letters[guess[g]][g] = LetterState.Absent;
+            if (states[g] != SpotState.Present)
+            {
+                for (byte i = 0; i < 5; i++)
+                {
+                    if (letters[guess[g]][i] == LetterState.Unknown)
+                    {
+                        letters[guess[g]][i] = LetterState.Absent;
+                    }
+                }
+            }
         }
 
         SpotResult[] spots = states.Select((state, i) => new SpotResult(guess[i], state)).ToArray();
