@@ -5,11 +5,14 @@ using System.Linq;
 public class GuessResult
 {
     private string? _blocks;
-    public SpotResult[] Spots { get; private set; }
 
-    public GuessResult(SpotResult[] spots)
+    public SpotResult[] Spots { get; private set; }
+    public LetterResults Letters { get; }
+
+    public GuessResult(SpotResult[] spots, LetterResults letters)
     {
         this.Spots = spots;
+        this.Letters = letters;
     }
 
     public string Blocks
@@ -24,4 +27,5 @@ public class GuessResult
             return _blocks;
         }
     }
+
 }

@@ -5,13 +5,19 @@ public class Game
     public static GuessResult GetGuessResult(string answer, string guess)
     {
         SpotState[] states = new SpotState[5];
+        LetterResults letters = new();
+
+        bool[] answerLetterUsed = new bool[5];
 
         for (byte i = 0; i < 5; i++)
         {
-            if (guess[i] == answer[i]) states[i] = SpotState.Correct;
+            if (guess[i] == answer[i])
+            {
+                states[i] = SpotState.Correct;
+                letters[guess[i]][i] = LetterState.Correct;
+                answerLetterUsed[i] = true;
+            }
         }
-
-        bool[] answerLetterUsed = new bool[5];
 
         for (byte g = 0; g < 5; g++)
         {
@@ -19,19 +25,20 @@ public class Game
 
             for (byte a = 0; a < 5; a++)
             {
-                if (states[a] == SpotState.Correct || answerLetterUsed[a]) continue;
-
-                if (guess[g] == answer[a])
+                if (!answerLetterUsed[a] && guess[g] == answer[a])
                 {
                     states[g] = SpotState.Present;
+                    letters[guess[g]][g] = LetterState.Present;
                     answerLetterUsed[a] = true;
                     break;
                 }
             }
+
+            if (states[g] != SpotState.Present) letters[guess[g]][g] = LetterState.Absent;
         }
 
         SpotResult[] spots = states.Select((state, i) => new SpotResult(guess[i], state)).ToArray();
 
-        return new GuessResult(spots);
+        return new GuessResult(spots, letters);
     }
 }

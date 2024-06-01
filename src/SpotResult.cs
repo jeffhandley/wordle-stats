@@ -24,10 +24,3 @@ public class SpotResult
         }
     }
 }
-
-public enum SpotState
-{
-    Incorrect,
-    Present,
-    Correct
-}
