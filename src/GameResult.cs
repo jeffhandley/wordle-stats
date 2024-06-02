@@ -10,7 +10,7 @@ public class GameResult
     {
         this.GuessResults = guessResults;
 
-        GameSpotResult[] spots = new GameSpotResult[5];
+        GameSpotResult[] spots = [ new(), new(), new(), new(), new() ];
         LetterResults<GameLetterResult> letters = new();
 
         for (byte guess = 0; guess < guessResults.Length; guess++)
@@ -18,8 +18,6 @@ public class GameResult
             for (byte spot = 0; spot < 5; spot++)
             {
                 char letter = guessResults[guess].Spots[spot].GuessLetter;
-
-                if (guess == 0) spots[spot] = new GameSpotResult();
 
                 if (guessResults[guess].Spots[spot].State == GuessSpotState.Correct)
                 {

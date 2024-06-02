@@ -53,7 +53,7 @@ public class Game
         return new GuessResult(spots, letters);
     }
 
-    public GameResult GetGameResult(string answer, string[] guesses)
+    public static GameResult GetGameResult(string answer, string[] guesses)
     {
         GuessResult[] guessResults = guesses.Select(guess => GetGuessResult(answer, guess)).ToArray();
 
