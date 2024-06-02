@@ -59,4 +59,66 @@ public class GameResult_Spots
 
         Assert.Equal(expected, actual);
     }
+
+    public static IEnumerable<object[]> IncorrectLetters_Data =>
+    [
+        [
+            "abcde", new string[] { },
+            new char[][] { new char[0], new char[0], new char[0], new char[0], new char[0] }
+        ],
+        [
+            "abcde", new[] { "afghi" },
+            new char[][] { new char[0], ['f'], ['g'], ['h'], ['i'] }
+        ],
+        [
+            "abcde", new[] { "afghi", "abjkl" },
+            new char[][] { new char[0], ['f'], ['g','j'], ['h','k'], ['i','l'] }
+        ],
+        [
+            "abcde", new[] { "afghi", "abjkl", "abcmn" },
+            new char[][] { new char[0], ['f'], ['g','j'], ['h','k','m'], ['i','l','n'] }
+        ],
+        [
+            "abcde", new[] { "afghi", "abjkl", "abcmn", "abcdo" },
+            new char[][] { new char[0], ['f'], ['g','j'], ['h','k','m'], ['i','l','n','o'] }
+        ],
+        [
+            "abcde", new[] { "afghi", "abjkl", "abcmn", "abcdo", "abcde" },
+            new char[][] { new char[0], ['f'], ['g','j'], ['h','k','m'], ['i','l','n','o'] }
+        ],
+        [
+            "aaaaa", new[] { "edcba" },
+            new char[][] { ['e'], ['d'], ['c'], ['b'], new char[0] }
+        ],
+        [
+            "aaaaa", new[] { "edcba", "edcax" },
+            new char[][] { ['e'], ['d'], ['c'], ['b'], ['x'] }
+        ],
+        [
+            "aaaaa", new[] { "edcba", "edcax", "edaxx" },
+            new char[][] { ['e'], ['d'], ['c'], ['b','x'], ['x'] }
+        ],
+        [
+            "aaaaa", new[] { "edcba", "edcax", "edaxx", "eaxxx" },
+            new char[][] { ['e'], ['d'], ['c','x'], ['b','x'], ['x'] }
+        ],
+        [
+            "aaaaa", new[] { "edcba", "edcax", "edaxx", "eaxxx", "axxxx" },
+            new char[][] { ['e'], ['d','x'], ['c','x'], ['b','x'], ['x'] }
+        ],
+        [
+            "aaaaa", new[] { "edcba", "edcax", "edaxx", "eaxxx", "axxxx", "xxxxx" },
+            new char[][] { ['e','x'], ['d','x'], ['c','x'], ['b','x'], ['x'] }
+        ]
+    ];
+
+    [Theory]
+    [MemberData(nameof(IncorrectLetters_Data))]
+    public void IncorrectLetters(string answer, string[] guesses, char[][] expected)
+    {
+        var result = Game.GetGameResult(answer, guesses);
+        var actual = result.Spots.Select(s => s.IncorrectLetters.ToArray()).ToArray();
+
+        Assert.Equal(expected, actual);
+    }
 }
