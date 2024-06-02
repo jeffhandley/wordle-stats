@@ -1,6 +1,6 @@
 namespace WordleStats;
 
-public enum SpotState
+public enum GuessSpotState
 {
     Incorrect,
     Present,

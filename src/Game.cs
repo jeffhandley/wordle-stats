@@ -1,11 +1,13 @@
 namespace WordleStats;
 
+using System.Linq;
+
 public class Game
 {
     public static GuessResult GetGuessResult(string answer, string guess)
     {
-        SpotState[] states = new SpotState[5];
-        LetterResults letters = new();
+        GuessSpotState[] states = new GuessSpotState[5];
+        LetterResults<GuessLetterResult> letters = new();
 
         bool[] answerLetterUsed = new bool[5];
 
@@ -13,41 +15,48 @@ public class Game
         {
             if (guess[i] == answer[i])
             {
-                states[i] = SpotState.Correct;
-                letters[guess[i]][i] = LetterState.Correct;
+                states[i] = GuessSpotState.Correct;
+                letters[guess[i]].Spots[i] = LetterState.Correct;
                 answerLetterUsed[i] = true;
             }
         }
 
         for (byte g = 0; g < 5; g++)
         {
-            if (states[g] == SpotState.Correct) continue;
+            if (states[g] == GuessSpotState.Correct) continue;
 
             for (byte a = 0; a < 5; a++)
             {
                 if (!answerLetterUsed[a] && guess[g] == answer[a])
                 {
-                    states[g] = SpotState.Present;
-                    letters[guess[g]][g] = LetterState.Present;
+                    states[g] = GuessSpotState.Present;
+                    letters[guess[g]].Spots[g] = LetterState.Present;
                     answerLetterUsed[a] = true;
                     break;
                 }
             }
 
-            if (states[g] != SpotState.Present)
+            if (states[g] != GuessSpotState.Present)
             {
                 for (byte i = 0; i < 5; i++)
                 {
-                    if (letters[guess[g]][i] == LetterState.Unknown)
+                    if (letters[guess[g]].Spots[i] == LetterState.Unknown)
                     {
-                        letters[guess[g]][i] = LetterState.Absent;
+                        letters[guess[g]].Spots[i] = LetterState.Absent;
                     }
                 }
             }
         }
 
-        SpotResult[] spots = states.Select((state, i) => new SpotResult(guess[i], state)).ToArray();
+        GuessSpotResult[] spots = states.Select((state, i) => new GuessSpotResult(guess[i], state)).ToArray();
 
         return new GuessResult(spots, letters);
+    }
+
+    public GameResult GetGameResult(string answer, string[] guesses)
+    {
+        GuessResult[] guessResults = guesses.Select(guess => GetGuessResult(answer, guess)).ToArray();
+
+        return new(guessResults);
     }
 }

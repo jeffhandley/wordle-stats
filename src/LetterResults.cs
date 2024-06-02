@@ -1,10 +1,10 @@
 namespace WordleStats;
 
-public class LetterResults
+public class LetterResults<T> where T : new()
 {
-    private Dictionary<char, LetterResult> _results = new();
+    private Dictionary<char, T> _results = new();
 
-    public LetterResult this[char letter]
+    public T this[char letter]
     {
         get
         {
@@ -16,4 +16,6 @@ public class LetterResults
             return _results[letter];
         }
     }
+
+    public char[] Guessed => _results.Keys.ToArray();
 }

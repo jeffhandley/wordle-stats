@@ -6,10 +6,10 @@ public class GuessResult
 {
     private string? _blocks;
 
-    public SpotResult[] Spots { get; private set; }
-    public LetterResults Letters { get; }
+    public GuessSpotResult[] Spots { get; }
+    public LetterResults<GuessLetterResult> Letters { get; }
 
-    public GuessResult(SpotResult[] spots, LetterResults letters)
+    public GuessResult(GuessSpotResult[] spots, LetterResults<GuessLetterResult> letters)
     {
         this.Spots = spots;
         this.Letters = letters;
