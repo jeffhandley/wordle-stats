@@ -23,9 +23,19 @@ public class GameResult
                 {
                     spots[spot].CorrectLetter = letter;
                 }
-                else
+                else if (guessResults[guess].Spots[spot].State == GuessSpotState.Present)
                 {
                     spots[spot].IncorrectLetters.Add(letter);
+                }
+                else
+                {
+                    for (byte i = 0; i < 5; i++)
+                    {
+                        if (spots[i].CorrectLetter != letter)
+                        {
+                            spots[i].IncorrectLetters.Add(letter);
+                        }
+                    }
                 }
             }
 
