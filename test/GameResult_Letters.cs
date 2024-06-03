@@ -2,8 +2,6 @@ namespace WordleStats.Tests;
 
 public class GameResult_Letters
 {
-    private static char[] AllLetters = "abcdefghijklmnopqrstuvwxyz".ToArray();
-
     [Theory]
     [InlineData("abcde", new string[] { }, "abcdefghijklmnopqrstuvwxyz")]
     [InlineData("abcde", new string[] { "zzzzz" }, "abcdefghijklmnopqrstuvwxy")]
@@ -18,7 +16,7 @@ public class GameResult_Letters
     public void Unknown(string answer, string[] guesses, string expected)
     {
         var result = Game.GetGameResult(answer, guesses);
-        var actual = string.Join("", AllLetters.Where(l => result.Letters[l].State == LetterState.Unknown));
+        var actual = string.Join("", result.GetLetters(LetterState.Unknown));
 
         Assert.Equal(expected, actual);
     }
@@ -37,7 +35,7 @@ public class GameResult_Letters
     public void Absent(string answer, string[] guesses, string expected)
     {
         var result = Game.GetGameResult(answer, guesses);
-        var actual = string.Join("", AllLetters.Where(l => result.Letters[l].State == LetterState.Absent));
+        var actual = string.Join("", result.GetLetters(LetterState.Absent));
 
         Assert.Equal(expected, actual);
     }
@@ -56,7 +54,7 @@ public class GameResult_Letters
     public void Present(string answer, string[] guesses, string expected)
     {
         var result = Game.GetGameResult(answer, guesses);
-        var actual = string.Join("", AllLetters.Where(l => result.Letters[l].State == LetterState.Present));
+        var actual = string.Join("", result.GetLetters(LetterState.Present));
 
         Assert.Equal(expected, actual);
     }
@@ -75,7 +73,7 @@ public class GameResult_Letters
     public void Correct(string answer, string[] guesses, string expected)
     {
         var result = Game.GetGameResult(answer, guesses);
-        var actual = string.Join("", AllLetters.Where(l => result.Letters[l].State == LetterState.Correct));
+        var actual = string.Join("", result.GetLetters(LetterState.Correct));
 
         Assert.Equal(expected, actual);
     }

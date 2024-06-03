@@ -49,4 +49,20 @@ public class GameResult
         this.Spots = spots;
         this.Letters = letters;
     }
+
+    public char[] GetLetters(LetterState state) =>
+        WordList.AllLetterChars.Where(l => Letters[l].State == state).ToArray();
+
+    public string[] GetPossibilityPatterns()
+    {
+        string correctLetters = string.Join("", Spots.Select(spot =>
+            spot.AllLettersPossible ? "." :
+            spot.CorrectLetter is not null ? spot.CorrectLetter.ToString() :
+            spot.IncorrectLetters.Count > 13 ?
+            $"[{string.Join("", spot.PossibleLetters)}]" :
+            $"[^{string.Join("", spot.IncorrectLetters)}]"
+        ));
+
+        return new string[] { correctLetters };
+    }
 }
