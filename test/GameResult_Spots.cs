@@ -1,7 +1,5 @@
 namespace WordleStats.Tests;
 
-using System.Linq;
-
 public class GameResult_Spots
 {
     public static IEnumerable<object[]> CorrectLetters_Data() =>

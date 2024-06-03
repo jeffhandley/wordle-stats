@@ -1,7 +1,5 @@
 namespace WordleStats;
 
-using System.Linq;
-
 public class Game
 {
     public static GuessResult GetGuessResult(string answer, string guess)

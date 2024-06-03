@@ -1,7 +1,5 @@
 namespace WordleStats;
 
-using System.Linq;
-
 public class GuessLetterResult
 {
     public LetterState[] Spots { get; } = new LetterState[5];

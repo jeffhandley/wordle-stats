@@ -1,7 +1,5 @@
 namespace WordleStats;
 
-using System.Linq;
-
 public class GuessResult
 {
     private string? _blocks;
