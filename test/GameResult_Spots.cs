@@ -76,39 +76,59 @@ public class GameResult_Spots
         ],
         [
             "abcde", new[] { "fghij", "aklmn", "aaopq" },
-            new string[] { "fghijklmnopq", "fghijklmnaopq", "fghijklmnaopq", "fghijklmnaopq", "fghijklmnaopq" }
+            new string[] { "fghijklmnopq", "afghijklmnopq", "afghijklmnopq", "afghijklmnopq", "afghijklmnopq" }
         ],
         [
             "abcde", new[] { "fghij", "aklmn", "aaopq", "abrst" },
-            new string[] { "fghijklmnopqrst", "fghijklmnaopqrst", "fghijklmnaopqrst", "fghijklmnaopqrst", "fghijklmnaopqrst" }
+            new string[] { "fghijklmnopqrst", "afghijklmnopqrst", "afghijklmnopqrst", "afghijklmnopqrst", "afghijklmnopqrst" }
         ],
         [
             "abcde", new[] { "fghij", "aklmn", "aaopq", "abrst", "abbuv" },
-            new string[] { "fghijklmnopqrstbuv", "fghijklmnaopqrstuv", "fghijklmnaopqrstbuv", "fghijklmnaopqrstbuv", "fghijklmnaopqrstbuv" }
+            new string[] { "bfghijklmnopqrstuv", "afghijklmnopqrstuv", "abfghijklmnopqrstuv", "abfghijklmnopqrstuv", "abfghijklmnopqrstuv" }
         ],
         [
             "abcde", new[] { "fghij", "aklmn", "aaopq", "abrst", "abbuv", "abcwx" },
-            new string[] { "fghijklmnopqrstbuvwx", "fghijklmnaopqrstuvwx", "fghijklmnaopqrstbuvwx", "fghijklmnaopqrstbuvwx", "fghijklmnaopqrstbuvwx" }
+            new string[] { "bfghijklmnopqrstuvwx", "afghijklmnopqrstuvwx", "abfghijklmnopqrstuvwx", "abfghijklmnopqrstuvwx", "abfghijklmnopqrstuvwx" }
         ],
         [
             "abcde", new[] { "fghij", "aklmn", "aaopq", "abrst", "abbuv", "abcwx", "abccy" },
-            new string[] { "fghijklmnopqrstbuvwxcy", "fghijklmnaopqrstuvwxcy", "fghijklmnaopqrstbuvwxy", "fghijklmnaopqrstbuvwxcy", "fghijklmnaopqrstbuvwxcy" }
+            new string[] { "bcfghijklmnopqrstuvwxy", "acfghijklmnopqrstuvwxy", "abfghijklmnopqrstuvwxy", "abcfghijklmnopqrstuvwxy", "abcfghijklmnopqrstuvwxy" }
         ],
         [
             "abcde", new[] { "fghij", "aklmn", "aaopq", "abrst", "abbuv", "abcwx", "abccy", "abcdz" },
-            new string[] { "fghijklmnopqrstbuvwxcyz", "fghijklmnaopqrstuvwxcyz", "fghijklmnaopqrstbuvwxyz", "fghijklmnaopqrstbuvwxcyz", "fghijklmnaopqrstbuvwxcyz" }
+            new string[] { "bcfghijklmnopqrstuvwxyz", "acfghijklmnopqrstuvwxyz", "abfghijklmnopqrstuvwxyz", "abcfghijklmnopqrstuvwxyz", "abcfghijklmnopqrstuvwxyz" }
         ],
         [
             "abcde", new[] { "fghij", "aklmn", "aaopq", "abrst", "abbuv", "abcwx", "abccy", "abcdz", "abcdd" },
-            new string[] { "fghijklmnopqrstbuvwxcyzd", "fghijklmnaopqrstuvwxcyzd", "fghijklmnaopqrstbuvwxyzd", "fghijklmnaopqrstbuvwxcyz", "fghijklmnaopqrstbuvwxcyzd" }
+            new string[] { "bcdfghijklmnopqrstuvwxyz", "acdfghijklmnopqrstuvwxyz", "abdfghijklmnopqrstuvwxyz", "abcfghijklmnopqrstuvwxyz", "abcdfghijklmnopqrstuvwxyz" }
         ],
         [
             "abcde", new[] { "fghij", "aklmn", "aaopq", "abrst", "abbuv", "abcwx", "abccy", "abcdz", "abcdd", "abcde" },
-            new string[] { "fghijklmnopqrstbuvwxcyzd", "fghijklmnaopqrstuvwxcyzd", "fghijklmnaopqrstbuvwxyzd", "fghijklmnaopqrstbuvwxcyz", "fghijklmnaopqrstbuvwxcyzd" }
+            new string[] { "bcdfghijklmnopqrstuvwxyz", "acdfghijklmnopqrstuvwxyz", "abdfghijklmnopqrstuvwxyz", "abcfghijklmnopqrstuvwxyz", "abcdfghijklmnopqrstuvwxyz" }
         ],
         [
             "abcde", new[] { "fghij", "aklmn", "aaopq", "abrst", "abbuv", "abcwx", "abccy", "abcdz", "abcdd", "abcde", "eeeee" },
-            new string[] { "fghijklmnopqrstbuvwxcyzde", "fghijklmnaopqrstuvwxcyzde", "fghijklmnaopqrstbuvwxyzde", "fghijklmnaopqrstbuvwxcyze", "fghijklmnaopqrstbuvwxcyzd" }
+            new string[] { "bcdefghijklmnopqrstuvwxyz", "acdefghijklmnopqrstuvwxyz", "abdefghijklmnopqrstuvwxyz", "abcefghijklmnopqrstuvwxyz", "abcdfghijklmnopqrstuvwxyz" }
+        ],
+        [
+            "aaabb", new[] { "bbbaa" },
+            new string[] { "b", "b", "b", "a", "a" }
+        ],
+        [
+            "aaabb", new[] { "bbbaa", "bccca" },
+            new string[] { "bc", "bc", "bc", "ac", "ac" }
+        ],
+        [
+            "aaabb", new[] { "bbbaa", "bccca", "daabd" },
+            new string[] { "bcd", "bcd", "bcd", "acd", "acd" }
+        ],
+        [
+            "aaabb", new[] { "bbbaa", "bccca", "daabd", "aaabe" },
+            new string[] { "bcde", "bcde", "bcde", "acde", "acde" }
+        ],
+        [
+            "aaabb", new[] { "bbbaa", "bccca", "daabd", "aaabe", "aaabb" },
+            new string[] { "bcde", "bcde", "bcde", "acde", "acde" }
         ]
     ];
 

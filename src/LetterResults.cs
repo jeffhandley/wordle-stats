@@ -17,5 +17,5 @@ public class LetterResults<T> where T : new()
         }
     }
 
-    public char[] Guessed => _results.Keys.ToArray();
+    public char[] Guessed => new SortedSet<char>(_results.Keys).ToArray();
 }

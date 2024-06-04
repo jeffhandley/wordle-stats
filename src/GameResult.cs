@@ -15,34 +15,45 @@ public class GameResult
 
         for (byte guess = 0; guess < guessResults.Length; guess++)
         {
+            HashSet<char> presentLetters = new();
+            HashSet<char> absentLetters = new();
+
             for (byte spot = 0; spot < 5; spot++)
             {
                 char letter = guessResults[guess].Spots[spot].GuessLetter;
+                GuessLetterResult guessLetterResult = guessResults[guess].Letters[letter];
 
-                if (guessResults[guess].Spots[spot].State == GuessSpotState.Correct)
+                letters[letter].GuessLetterResults.Add(guessLetterResult);
+                GuessSpotState state = guessResults[guess].Spots[spot].State;
+
+                switch (state)
                 {
-                    spots[spot].CorrectLetter = letter;
-                }
-                else if (guessResults[guess].Spots[spot].State == GuessSpotState.Present)
-                {
-                    spots[spot].IncorrectLetters.Add(letter);
-                }
-                else
-                {
-                    for (byte i = 0; i < 5; i++)
-                    {
-                        if (spots[i].CorrectLetter != letter)
-                        {
-                            spots[i].IncorrectLetters.Add(letter);
-                        }
-                    }
+                    case GuessSpotState.Correct:
+                        spots[spot].CorrectLetter = letter;
+                        break;
+                    case GuessSpotState.Present:
+                        spots[spot].IncorrectLetters.Add(letter);
+                        presentLetters.Add(letter);
+                        break;
+                    case GuessSpotState.Incorrect:
+                        spots[spot].IncorrectLetters.Add(letter);
+                        absentLetters.Add(letter);
+                        break;
                 }
             }
 
-            foreach (char letter in guessResults[guess].Letters.Guessed)
+            // Letters marked as absent without another present spot are
+            // known to be incorrect at all places where the letter wasn't
+            // already marked as correct.
+            foreach (char letter in absentLetters.Except(presentLetters))
             {
-                GameLetterResult result = letters[letter];
-                result.GuessLetterResults.Add(guessResults[guess].Letters[letter]);
+                for (byte spot = 0; spot < 5; spot++)
+                {
+                    if (spots[spot].CorrectLetter != letter)
+                    {
+                        spots[spot].IncorrectLetters.Add(letter);
+                    }
+                }
             }
         }
 
@@ -53,16 +64,25 @@ public class GameResult
     public char[] GetLetters(LetterState state) =>
         WordList.AllLetterChars.Where(l => Letters[l].State == state).ToArray();
 
-    public string[] GetPossibilityPatterns()
+    public string GetPossibilityPattern()
     {
+        // Use a character by character pattern for each spot
+        // If all letters are possible, use '.'; if the correct
+        // letter is known, use that letter only; otherwise, use
+        // a negated list of characters for those that are known
+        // to be incorrect at that spot.
         string correctLetters = string.Join("", Spots.Select(spot =>
             spot.AllLettersPossible ? "." :
             spot.CorrectLetter is not null ? spot.CorrectLetter.ToString() :
-            spot.IncorrectLetters.Count > 13 ?
-            $"[{string.Join("", spot.PossibleLetters)}]" :
             $"[^{string.Join("", spot.IncorrectLetters)}]"
         ));
 
-        return new string[] { correctLetters };
+        // Use a look-ahead assertion for all letters that are
+        // known to be present.
+        string presentLetters = string.Join("",
+            GetLetters(LetterState.Present).Select(l => $"(?=.*{l})")
+        );
+
+        return presentLetters + correctLetters;
     }
 }

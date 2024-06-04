@@ -77,4 +77,28 @@ public class GameResult_Letters
 
         Assert.Equal(expected, actual);
     }
+
+    [Theory]
+    [InlineData("aaabb", new string[] { }, 'a', LetterState.Unknown)]
+    [InlineData("aaabb", new string[] { }, 'b', LetterState.Unknown)]
+    [InlineData("aaabb", new string[] { }, 'c', LetterState.Unknown)]
+    [InlineData("aaabb", new string[] { "bbbaa" }, 'a', LetterState.Present)]
+    [InlineData("aaabb", new string[] { "bbbaa" }, 'b', LetterState.Present)]
+    [InlineData("aaabb", new string[] { "bbbaa" }, 'c', LetterState.Unknown)]
+    [InlineData("aaabb", new string[] { "bbbaa", "bbaaa" }, 'a', LetterState.Correct)]
+    [InlineData("aaabb", new string[] { "bbbaa", "bbaaa" }, 'b', LetterState.Present)]
+    [InlineData("aaabb", new string[] { "bbbaa", "bbaaa" }, 'c', LetterState.Unknown)]
+    [InlineData("aaabb", new string[] { "bbbaa", "bbaaa", "baaab" }, 'a', LetterState.Correct)]
+    [InlineData("aaabb", new string[] { "bbbaa", "bbaaa", "baaab" }, 'b', LetterState.Correct)]
+    [InlineData("aaabb", new string[] { "bbbaa", "bbaaa", "baaab" }, 'c', LetterState.Unknown)]
+    [InlineData("aaabb", new string[] { "bbbaa", "bbaaa", "baaab", "aaabb" }, 'a', LetterState.Correct)]
+    [InlineData("aaabb", new string[] { "bbbaa", "bbaaa", "baaab", "aaabb" }, 'b', LetterState.Correct)]
+    [InlineData("aaabb", new string[] { "bbbaa", "bbaaa", "baaab", "aaabb" }, 'c', LetterState.Unknown)]
+    public void RepeatedLetters(string answer, string[] guesses, char letter, LetterState expected)
+    {
+        var result = Game.GetGameResult(answer, guesses);
+        var actual = result.Letters[letter].State;
+
+        Assert.Equal(expected, actual);
+    }
 }
