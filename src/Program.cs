@@ -48,12 +48,27 @@ while (true)
         break;
     }
 
-    Console.WriteLine($" - {AsBlockLetters(string.Join("-", result.GetAvailableLetters()))} - ");
-    Console.Write($"Guess {guesses.Count + 1}: ");
-    string? guess = Console.ReadLine();
+    string? guess;
+    while (true)
+    {
+        Console.WriteLine($"\n - {AsBlockLetters(string.Join("-", result.GetAvailableLetters()))} - ");
+        Console.Write($"Guess {guesses.Count + 1}: ");
+        guess = Console.ReadLine();
+
+        if (string.IsNullOrWhiteSpace(guess)) break;
+
+        if (Array.IndexOf(WordList.AllWords, guess.ToLower()) == -1)
+        {
+            Console.WriteLine("Guess not recognized as a word.");
+        }
+        else
+        {
+            guesses.Add(guess);
+            break;
+        }
+    }
 
     if (string.IsNullOrWhiteSpace(guess)) break;
-    guesses.Add(guess);
 }
 
 static string AsBlockLetters(string guess)
