@@ -48,13 +48,13 @@ public class Game
 
         GuessSpotResult[] spots = states.Select((state, i) => new GuessSpotResult(guess[i], state)).ToArray();
 
-        return new GuessResult(spots, letters);
+        return new GuessResult(guess, spots, letters);
     }
 
     public static GameResult GetGameResult(string answer, string[] guesses)
     {
         GuessResult[] guessResults = guesses.Select(guess => GetGuessResult(answer, guess)).ToArray();
 
-        return new(guessResults);
+        return new(answer, guessResults);
     }
 }

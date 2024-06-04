@@ -4,11 +4,13 @@ public class GuessResult
 {
     private string? _blocks;
 
+    public string Guess { get; }
     public GuessSpotResult[] Spots { get; }
     public LetterResults<GuessLetterResult> Letters { get; }
 
-    public GuessResult(GuessSpotResult[] spots, LetterResults<GuessLetterResult> letters)
+    public GuessResult(string guess, GuessSpotResult[] spots, LetterResults<GuessLetterResult> letters)
     {
+        this.Guess = guess;
         this.Spots = spots;
         this.Letters = letters;
     }

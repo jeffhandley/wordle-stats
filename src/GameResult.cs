@@ -4,12 +4,16 @@ using System.Text.RegularExpressions;
 
 public class GameResult
 {
+    public string Answer { get; }
+    public bool IsWin => WinningGuess > 0;
+    public byte WinningGuess { get; }
     public GuessResult[] GuessResults { get; }
     public GameSpotResult[] Spots { get; }
     public LetterResults<GameLetterResult> Letters { get; }
 
-    public GameResult(GuessResult[] guessResults)
+    public GameResult(string answer, GuessResult[] guessResults)
     {
+        this.Answer = answer;
         this.GuessResults = guessResults;
 
         GameSpotResult[] spots = [ new(), new(), new(), new(), new() ];
@@ -56,6 +60,12 @@ public class GameResult
                         spots[spot].IncorrectLetters.Add(letter);
                     }
                 }
+            }
+
+            if (guessResults[guess].Guess == answer)
+            {
+                this.WinningGuess = (byte)(guess + 1);
+                break;
             }
         }
 

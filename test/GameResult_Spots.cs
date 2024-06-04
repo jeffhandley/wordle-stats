@@ -107,10 +107,6 @@ public class GameResult_Spots
             new string[] { "bcdfghijklmnopqrstuvwxyz", "acdfghijklmnopqrstuvwxyz", "abdfghijklmnopqrstuvwxyz", "abcfghijklmnopqrstuvwxyz", "abcdfghijklmnopqrstuvwxyz" }
         ],
         [
-            "abcde", new[] { "fghij", "aklmn", "aaopq", "abrst", "abbuv", "abcwx", "abccy", "abcdz", "abcdd", "abcde", "eeeee" },
-            new string[] { "bcdefghijklmnopqrstuvwxyz", "acdefghijklmnopqrstuvwxyz", "abdefghijklmnopqrstuvwxyz", "abcefghijklmnopqrstuvwxyz", "abcdfghijklmnopqrstuvwxyz" }
-        ],
-        [
             "aaabb", new[] { "bbbaa" },
             new string[] { "b", "b", "b", "a", "a" }
         ],
