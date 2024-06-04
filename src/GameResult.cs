@@ -1,5 +1,7 @@
 namespace WordleStats;
 
+using System.Text.RegularExpressions;
+
 public class GameResult
 {
     public GuessResult[] GuessResults { get; }
@@ -84,5 +86,12 @@ public class GameResult
         );
 
         return presentLetters + correctLetters;
+    }
+
+    public string[] GetPossibleWords()
+    {
+        Regex pattern = new(GetPossibilityPattern(), RegexOptions.Compiled);
+
+        return WordList.AllWords.Where(word => pattern.IsMatch(word)).ToArray();
     }
 }
