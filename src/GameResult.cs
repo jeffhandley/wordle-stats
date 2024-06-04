@@ -5,19 +5,19 @@ using System.Text.RegularExpressions;
 public class GameResult
 {
     public string Answer { get; }
-    public bool IsWin => WinningGuess > 0;
-    public byte WinningGuess { get; }
-    public GuessResult[] GuessResults { get; }
     public GameSpotResult[] Spots { get; }
     public LetterResults<GameLetterResult> Letters { get; }
+    public GameGuessResult[] GuessResults { get; }
+
+    public byte WinningGuess { get; }
+    public bool IsWin => WinningGuess > 0;
 
     public GameResult(string answer, GuessResult[] guessResults)
     {
-        this.Answer = answer;
-        this.GuessResults = guessResults;
-
-        GameSpotResult[] spots = [ new(), new(), new(), new(), new() ];
-        LetterResults<GameLetterResult> letters = new();
+        Answer = answer;
+        Spots = [ new(), new(), new(), new(), new() ];
+        Letters = new();
+        GuessResults = new GameGuessResult[guessResults.Length];
 
         for (byte guess = 0; guess < guessResults.Length; guess++)
         {
@@ -29,20 +29,20 @@ public class GameResult
                 char letter = guessResults[guess].Spots[spot].GuessLetter;
                 GuessLetterResult guessLetterResult = guessResults[guess].Letters[letter];
 
-                letters[letter].GuessLetterResults.Add(guessLetterResult);
+                Letters[letter].GuessLetterResults.Add(guessLetterResult);
                 GuessSpotState state = guessResults[guess].Spots[spot].State;
 
                 switch (state)
                 {
                     case GuessSpotState.Correct:
-                        spots[spot].CorrectLetter = letter;
+                        Spots[spot].CorrectLetter = letter;
                         break;
                     case GuessSpotState.Present:
-                        spots[spot].IncorrectLetters.Add(letter);
+                        Spots[spot].IncorrectLetters.Add(letter);
                         presentLetters.Add(letter);
                         break;
                     case GuessSpotState.Incorrect:
-                        spots[spot].IncorrectLetters.Add(letter);
+                        Spots[spot].IncorrectLetters.Add(letter);
                         absentLetters.Add(letter);
                         break;
                 }
@@ -55,33 +55,31 @@ public class GameResult
             {
                 for (byte spot = 0; spot < 5; spot++)
                 {
-                    if (spots[spot].CorrectLetter != letter)
+                    if (Spots[spot].CorrectLetter != letter)
                     {
-                        spots[spot].IncorrectLetters.Add(letter);
+                        Spots[spot].IncorrectLetters.Add(letter);
                     }
                 }
             }
 
+            string possibilityPattern = GetPossibilityPattern();
+            string[] possibleWords = GetPossibleWords();
+
+            GuessResults[guess] = new GameGuessResult(guessResults[guess], possibilityPattern, possibleWords);
+
             if (guessResults[guess].Guess == answer)
             {
-                this.WinningGuess = (byte)(guess + 1);
+                WinningGuess = (byte)(guess + 1);
                 break;
             }
         }
-
-        this.Spots = spots;
-        this.Letters = letters;
     }
 
-    public char[] GetLetters(LetterState state) =>
-        WordList.AllLetterChars.Where(l => Letters[l].State == state).ToArray();
+    public char[] GetLetters(params LetterState[] states) =>
+        WordList.AllLetterChars.Where(l => states.Contains(Letters[l].State)).ToArray();
 
-    public char[] GetAvailableLetters() =>
-        WordList.AllLetterChars.Where(l =>
-            Letters[l].State == LetterState.Unknown ||
-            Letters[l].State == LetterState.Present ||
-            Letters[l].State == LetterState.Correct)
-        .ToArray();
+    public char[] GetLettersAvailable() => GetLetters(LetterState.Unknown, LetterState.Present, LetterState.Correct);
+    public char[] GetLettersKnown() => GetLetters(LetterState.Present, LetterState.Correct);
 
     public string GetPossibilityPattern()
     {

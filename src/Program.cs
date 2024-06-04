@@ -25,33 +25,35 @@ List<string> guesses = new();
 while (true)
 {
     GameResult result = Game.GetGameResult(answer, guesses.ToArray());
-
-    if (guesses.Count > 0)
+    Action showBoard = () =>
     {
-        string[] possibilities = result.GetPossibleWords();
-        GuessResult guessResult = result.GuessResults[guesses.Count - 1];
-
-        Console.WriteLine($"{AsBlockLetters(guessResult.Guess)}\n{guessResult.Blocks} {possibilities.Length}\n");
-    }
+        foreach (GameGuessResult guessResult in result.GuessResults)
+        {
+            Console.WriteLine($"{AsBlockLetters(guessResult.Guess)} {guessResult.Blocks} {guessResult.PossibleWords.Length}");
+        }
+    };
 
     if (result.IsWin || guesses.Count == 6)
     {
+        showBoard();
         Console.WriteLine($"\n{(result.IsWin ? $"WIN! Score: {result.WinningGuess}" : "Try Again")}");
-
-        foreach (GuessResult guessResult in result.GuessResults)
-        {
-            Console.WriteLine(guessResult.Blocks);
-        }
-
-        Console.WriteLine(AsBlockLetters(answer));
 
         break;
     }
 
+    string[] possibilities = result.GetPossibleWords();
     string? guess;
+
     while (true)
     {
-        Console.WriteLine($"\n - {AsBlockLetters(string.Join("-", result.GetAvailableLetters()))} - ");
+        showBoard();
+        Console.WriteLine();
+        Console.WriteLine($"There are {possibilities.Length} possible words remaining");
+        Console.WriteLine($"Absent:    {AsBlockLetters(string.Join(" ", result.GetLetters(LetterState.Absent)))}");
+        Console.WriteLine($"Available: {AsBlockLetters(string.Join(" ", result.GetLettersAvailable()))}");
+        Console.WriteLine($"Present:   {AsBlockLetters(string.Join(" ", result.GetLettersKnown()))}");
+        Console.WriteLine();
+
         Console.Write($"Guess {guesses.Count + 1}: ");
         guess = Console.ReadLine();
 
