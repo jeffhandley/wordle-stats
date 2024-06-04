@@ -76,6 +76,13 @@ public class GameResult
     public char[] GetLetters(LetterState state) =>
         WordList.AllLetterChars.Where(l => Letters[l].State == state).ToArray();
 
+    public char[] GetAvailableLetters() =>
+        WordList.AllLetterChars.Where(l =>
+            Letters[l].State == LetterState.Unknown ||
+            Letters[l].State == LetterState.Present ||
+            Letters[l].State == LetterState.Correct)
+        .ToArray();
+
     public string GetPossibilityPattern()
     {
         // Use a character by character pattern for each spot
