@@ -9,4 +9,9 @@
     <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="crayon" Version="2.0.69" />
+    <PackageReference Include="UtilityCli" Version="0.1.4-preview" />
+  </ItemGroup>
+
 </Project>

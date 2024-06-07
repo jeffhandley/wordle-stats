@@ -25,15 +25,33 @@ public class GameResult_GetLetters
     [InlineData("abcde", new string[] { "zzzzz" }, "" )]
     [InlineData("abcde", new string[] { "zzzzz", "uvwxy" }, "" )]
     [InlineData("abcde", new string[] { "zzzzz", "uvwxy", "fghia" }, "a" )]
-    [InlineData("abcde", new string[] { "zzzzz", "uvwxy", "fghia", "ajklb" }, "ab" )]
-    [InlineData("abcde", new string[] { "zzzzz", "uvwxy", "fghia", "ajklb", "abmnc" }, "abc" )]
-    [InlineData("abcde", new string[] { "zzzzz", "uvwxy", "fghia", "ajklb", "abmnc", "abcod" }, "abcd" )]
-    [InlineData("abcde", new string[] { "zzzzz", "uvwxy", "fghia", "ajklb", "abmnc", "abcod", "abcdp" }, "abcd" )]
-    [InlineData("abcde", new string[] { "zzzzz", "uvwxy", "fghia", "ajklb", "abmnc", "abcod", "abcdp", "abcde" }, "abcde" )]
-    public void GetLettersKnown(string answer, string[] guesses, string expected)
+    [InlineData("abcde", new string[] { "zzzzz", "uvwxy", "fghia", "ajklb" }, "b" )]
+    [InlineData("abcde", new string[] { "zzzzz", "uvwxy", "fghia", "ajklb", "abmnc" }, "c" )]
+    [InlineData("abcde", new string[] { "zzzzz", "uvwxy", "fghia", "ajklb", "abmnc", "abcod" }, "d" )]
+    [InlineData("abcde", new string[] { "zzzzz", "uvwxy", "fghia", "ajklb", "abmnc", "abcod", "abcdp" }, "" )]
+    [InlineData("abcde", new string[] { "zzzzz", "uvwxy", "fghia", "ajklb", "abmnc", "abcod", "abcdp", "abcde" }, "" )]
+    public void GetLettersPresent(string answer, string[] guesses, string expected)
     {
         var result = Game.GetGameResult(answer, guesses);
-        var actual = string.Join("", result.GetLettersKnown());
+        var actual = string.Join("", result.GetLettersPresent());
+
+        Assert.Equal(expected, actual);
+    }
+
+    [Theory]
+    [InlineData("abcde", new string[] { }, "" )]
+    [InlineData("abcde", new string[] { "zzzzz" }, "" )]
+    [InlineData("abcde", new string[] { "zzzzz", "uvwxy" }, "" )]
+    [InlineData("abcde", new string[] { "zzzzz", "uvwxy", "fghia" }, "" )]
+    [InlineData("abcde", new string[] { "zzzzz", "uvwxy", "fghia", "ajklb" }, "a" )]
+    [InlineData("abcde", new string[] { "zzzzz", "uvwxy", "fghia", "ajklb", "abmnc" }, "ab" )]
+    [InlineData("abcde", new string[] { "zzzzz", "uvwxy", "fghia", "ajklb", "abmnc", "abcod" }, "abc" )]
+    [InlineData("abcde", new string[] { "zzzzz", "uvwxy", "fghia", "ajklb", "abmnc", "abcod", "abcdp" }, "abcd" )]
+    [InlineData("abcde", new string[] { "zzzzz", "uvwxy", "fghia", "ajklb", "abmnc", "abcod", "abcdp", "abcde" }, "abcde" )]
+    public void GetLettersCorrect(string answer, string[] guesses, string expected)
+    {
+        var result = Game.GetGameResult(answer, guesses);
+        var actual = string.Join("", result.GetLettersCorrect());
 
         Assert.Equal(expected, actual);
     }

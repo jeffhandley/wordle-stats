@@ -79,7 +79,8 @@ public class GameResult
         WordList.AllLetterChars.Where(l => states.Contains(Letters[l].State)).ToArray();
 
     public char[] GetLettersAvailable() => GetLetters(LetterState.Unknown, LetterState.Present, LetterState.Correct);
-    public char[] GetLettersKnown() => GetLetters(LetterState.Present, LetterState.Correct);
+    public char[] GetLettersPresent() => GetLetters(LetterState.Present);
+    public char[] GetLettersCorrect() => GetLetters(LetterState.Correct);
 
     public string GetPossibilityPattern()
     {

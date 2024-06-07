@@ -1,7 +1,16 @@
 using WordleStats;
+using static System.Console;
+using static Crayon.Output;
 
-Console.WriteLine("Enter answer or press enter to play a random wordle.");
-string? answer = Console.ReadLine();
+var cli = UtilityCli.CliArgs.Parse(args);
+string? answer = cli.GetString();
+
+if (string.IsNullOrWhiteSpace(answer))
+{
+    Console.WriteLine("Enter answer or press enter to play a random wordle.");
+    answer = Console.ReadLine();
+}
+
 int answerIndex;
 
 if (string.IsNullOrWhiteSpace(answer))
@@ -29,8 +38,23 @@ while (true)
     {
         foreach (GameGuessResult guessResult in result.GuessResults)
         {
-            Console.WriteLine($"{AsBlockLetters(guessResult.Guess)} {guessResult.Blocks} {guessResult.PossibleWords.Length}");
+            Write("           ");
+
+            foreach (GuessSpotResult spotResult in guessResult.Spots)
+            {
+                var withColor = spotResult.State switch
+                {
+                    GuessSpotState.Correct => Bold().Bright.Green(),
+                    GuessSpotState.Present => Bold().Bright.Yellow(),
+                                         _ => Dim().White(),
+                };
+
+                Write(withColor.Text(AsBlockLetter(spotResult.GuessLetter)));
+            }
+
+            Console.WriteLine($" {guessResult.PossibleWords.Length}");
         }
+
     };
 
     if (result.IsWin || guesses.Count == 6)
@@ -47,21 +71,22 @@ while (true)
     while (true)
     {
         showBoard();
-        Console.WriteLine();
-        Console.WriteLine($"There are {possibilities.Length} possible words remaining");
-        Console.WriteLine($"Absent:    {AsBlockLetters(string.Join(" ", result.GetLetters(LetterState.Absent)))}");
-        Console.WriteLine($"Available: {AsBlockLetters(string.Join(" ", result.GetLettersAvailable()))}");
-        Console.WriteLine($"Present:   {AsBlockLetters(string.Join(" ", result.GetLettersKnown()))}");
-        Console.WriteLine();
+        WriteLine();
+        WriteLine($"           There are {Bold().Underline().Text(possibilities.Length.ToString())} possible words remaining");
+        WriteLine($"Absent:    {Dim().White(AsBlockLetters(string.Join(" ", result.GetLetters(LetterState.Absent))))}");
+        WriteLine($"Available: {Bold().Bright.White(AsBlockLetters(string.Join(" ", result.GetLettersAvailable())))}");
+        WriteLine($"Present:   {Bold().Bright.Yellow(AsBlockLetters(string.Join(" ", result.GetLettersPresent())))}");
+        WriteLine($"Correct:   {Bold().Bright.Green(AsBlockLetters(string.Join(" ", result.GetLettersCorrect())))}");
+        WriteLine();
 
-        Console.Write($"Guess {guesses.Count + 1}: ");
+        Write($"Guess {guesses.Count + 1}:   ");
         guess = Console.ReadLine();
 
         if (string.IsNullOrWhiteSpace(guess)) break;
 
         if (Array.IndexOf(WordList.AllWords, guess.ToLower()) == -1)
         {
-            Console.WriteLine("Guess not recognized as a word.");
+            Console.WriteLine(Bold().Red($"Guess '{guess}' is not recognized as a word."));
         }
         else
         {
@@ -73,36 +98,36 @@ while (true)
     if (string.IsNullOrWhiteSpace(guess)) break;
 }
 
-static string AsBlockLetters(string guess)
+static string AsBlockLetter(char letter) => letter switch
 {
-    return string.Join("", guess.ToArray().Select(letter => letter switch
-    {
-        'a' => "🄰 ",
-        'b' => "🄱 ",
-        'c' => "🄲 ",
-        'd' => "🄳 ",
-        'e' => "🄴 ",
-        'f' => "🄵 ",
-        'g' => "🄶 ",
-        'h' => "🄷 ",
-        'i' => "🄸 ",
-        'j' => "🄹 ",
-        'k' => "🄺 ",
-        'l' => "🄻 ",
-        'm' => "🄼 ",
-        'n' => "🄽 ",
-        'o' => "🄾 ",
-        'p' => "🄿 ",
-        'q' => "🅀 ",
-        'r' => "🅁 ",
-        's' => "🅂 ",
-        't' => "🅃 ",
-        'u' => "🅄 ",
-        'v' => "🅅 ",
-        'w' => "🅆 ",
-        'x' => "🅇 ",
-        'y' => "🅈 ",
-        'z' => "🅉 ",
-        _   => letter.ToString()
-    }));
-}
+    'a' => "🄰 ",
+    'b' => "🄱 ",
+    'c' => "🄲 ",
+    'd' => "🄳 ",
+    'e' => "🄴 ",
+    'f' => "🄵 ",
+    'g' => "🄶 ",
+    'h' => "🄷 ",
+    'i' => "🄸 ",
+    'j' => "🄹 ",
+    'k' => "🄺 ",
+    'l' => "🄻 ",
+    'm' => "🄼 ",
+    'n' => "🄽 ",
+    'o' => "🄾 ",
+    'p' => "🄿 ",
+    'q' => "🅀 ",
+    'r' => "🅁 ",
+    's' => "🅂 ",
+    't' => "🅃 ",
+    'u' => "🅄 ",
+    'v' => "🅅 ",
+    'w' => "🅆 ",
+    'x' => "🅇 ",
+    'y' => "🅈 ",
+    'z' => "🅉 ",
+    _   => letter.ToString()
+};
+
+static string AsBlockLetters(string letters) =>
+    string.Join("", letters.ToArray().Select(AsBlockLetter));
